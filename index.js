@@ -48,7 +48,7 @@ class MQHelper {
 
 
     async queueSend(param) {
-        let {handlerName, data, corrId, id, name} = param;
+        let {handlerName, data, name} = param;
         if(name == null) name = "default";
 
         let sendName = name;
@@ -59,10 +59,7 @@ class MQHelper {
             let q = await this.channel.assertQueue(sendName);
     
             let content = {
-                data: data,
-                index: {
-                    id
-                }
+                data: data
             };
     
             // 送出 rpc 請求
@@ -70,7 +67,7 @@ class MQHelper {
             return await this.channel.sendToQueue(
                 sendName,
                 new Buffer(JSON.stringify(content)),
-                { correlationId: corrId, replyTo: q.queue }
+                { replyTo: q.queue }
             );
     
         } catch (err) {
