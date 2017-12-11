@@ -1,0 +1,21 @@
+{
+  "name": "mq-helper",
+  "version": "0.1.0",
+  "main": "index.js",
+  "description": "",
+  "devDependencies": {
+    "babel-core": "^6.26.0",
+    "config": "^1.28.1",
+    "jest-cli": "^21.2.0"
+  },
+  "dependencies": {
+    "amqplib": "^0.5.2",
+    "debug": "^3.1.0"
+  },
+  "engines": {
+    "node": ">= 8"
+  },
+  "scripts": {
+    "test": "jest __tests__"
+  }
+}
