@@ -20,9 +20,18 @@ const run = async () => {
         await mqHelper.init();
         let params = {            
             data:{msg: 1}, 
-            corrId:"1122334", 
-            id:1,
-            ...QUEUES[0]
+            name: "tasks",
+            handler: (mqHelper) => {
+                return (msg) => {
+                    
+                    msg.content = msg.content.toString('utf8');
+                    let execute = (msg) => {
+                        console.log(msg.content);
+                    }
+                    execute(msg);
+                    mqHelper.channel.ack(msg);
+                }
+            }
         }
 
     

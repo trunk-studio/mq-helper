@@ -51,7 +51,7 @@ class MQHelper {
         let {handlerName, data, corrId, id, name} = param;
         if(name == null) name = "default";
 
-        let sendName = name + "_request";
+        let sendName = name;
 
         try {    
             // 建立一個自己的 queue
@@ -82,7 +82,7 @@ class MQHelper {
         try {    
             let {name, handler} = params;
             if(name == null) name = "default";
-            let consumeName = name + "_request";
+            let consumeName = name ;
     
             let q = await this.channel.assertQueue(consumeName);    
             this.channel.consume(q.queue, handler(this));
