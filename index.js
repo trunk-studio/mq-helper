@@ -12,12 +12,13 @@ class MQHelper {
         this.ADAPTER = ADAPTER;
         this.URL = URL;
         this.PREFIX = PREFIX;
-        this.rpcQueueName = PREFIX + 'rpc_queue';
+
 
 
     }
     async getConnection() {
-        let connection = amqp.connect(this.url);
+
+        let connection = amqp.connect(this.URL);
         return await new Promise((resolve, reject) => {
             connection
                 .then(conn => resolve(conn))
@@ -36,24 +37,16 @@ class MQHelper {
     };
 
     async init() {
-
-        if(this.connection == null){
-            let connection = await this.getConnection();
-            this.connection = connection;
-        }
-
-        if(this.connection == null){
-            let channel = await connection.createChannel();
-            this.channel = channel;
-        }
-        
+        let connection = await this.getConnection();
+        this.connection = connection;
+        let channel = await connection.createChannel();
+        this.channel = channel;        
     };
 
 
 
 
     async queueSend(param) {
-        await this.init();
         
         let {handlerName, data, name} = param;
         if(name == null) name = "default";
@@ -82,12 +75,11 @@ class MQHelper {
         }
     };
     async queueConsume(params) {
-        await this.init();
         try {    
             let {name, handler} = params;
             if(name == null) name = "default";
             let consumeName = name ;
-    
+            console.log("consumeName", consumeName)
             let q = await this.channel.assertQueue(consumeName);    
             this.channel.consume(q.queue, handler(this));
 
