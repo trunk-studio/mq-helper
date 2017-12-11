@@ -36,11 +36,16 @@ class MQHelper {
     };
 
     async init() {
-        let connection = await this.getConnection();
-        this.connection = connection;
 
-        let channel = await connection.createChannel();
-        this.channel = channel;
+        if(this.connection == null){
+            let connection = await this.getConnection();
+            this.connection = connection;
+        }
+
+        if(this.connection == null){
+            let channel = await connection.createChannel();
+            this.channel = channel;
+        }
         
     };
 
@@ -48,6 +53,8 @@ class MQHelper {
 
 
     async queueSend(param) {
+        await this.init();
+        
         let {handlerName, data, name} = param;
         if(name == null) name = "default";
 
@@ -75,7 +82,7 @@ class MQHelper {
         }
     };
     async queueConsume(params) {
-
+        await this.init();
         try {    
             let {name, handler} = params;
             if(name == null) name = "default";

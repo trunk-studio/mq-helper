@@ -6,7 +6,7 @@ module.exports = {
         PREFIX: 'dev_',
         
         QUEUES: [{
-            name: "tasks",
+            name: "dispatchNotice_request",
             description: "",
             handler: (mqHelper) => {
                 return (msg) => {
